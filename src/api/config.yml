@@ -1,0 +1,14 @@
+server:
+        protocol: 'https://'
+        domain: 'netrunnerdb.com/'
+        api_root: 'api/2.0/public/'
+
+rest:
+        get_card: 'card/{}'
+        get_cards: 'cards'
+
+non_rest:
+        get_card_png: 'card_image/{}.png'
+
+cache:
+        max_age_in_seconds: 28800
