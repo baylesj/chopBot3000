@@ -1,5 +1,7 @@
 import requests
-from configuration import Configuration
+
+from netrunnerdb.configuration import Configuration
+
 
 class NetrunnerClient:
     def __init__(self):
@@ -8,7 +10,7 @@ class NetrunnerClient:
     def __get_response(self, url):
         response = requests.get(url)
         if response.status_code != 200:
-            raise ApiError('Request at "{}" raised {}'
+            raise SystemError('Request at "{}" raised {}'
                     .format(url, response.status_code))
 
         return response

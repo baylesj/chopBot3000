@@ -1,5 +1,7 @@
 import unittest
-from configuration import Configuration
+
+from netrunnerdb.configuration import Configuration
+
 
 class ConfigurationTest(unittest.TestCase):
     def test_invalid_file(self):

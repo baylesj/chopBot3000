@@ -1,8 +1,9 @@
 import unittest
 from datetime import datetime
 from datetime import timedelta
-from cardstore import CardStore
-from card import Card
+
+from netrunnerdb.cardstore import CardStore
+
 
 class CardStoreTest(unittest.TestCase):
     def _build_body(self, last_updated, version_number, cards):
