@@ -20,7 +20,7 @@ class BestResultFinder:
     def __get_max_scored_card(self, query):
         max_score = 0
         max_location = None
-        for i in range(self.__card_store.get_all_cards()):
+        for i in range(len(self.__card_store.get_all_cards())):
             score = self.__ranker.get_card_score(self.__card_store.get_card_by_index(i), query)
             if score > max_score:
                 max_location = i
@@ -28,4 +28,4 @@ class BestResultFinder:
 
         logger.info("Card query return location {}, score {}".format(max_location, max_score))
 
-        return self.__cards[max_location]
+        return self.__card_store.get_card_by_index(max_location)

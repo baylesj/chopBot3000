@@ -3,6 +3,9 @@ from netrunnerdb.clientconfig import ClientConfig
 from netrunnerdb.netrunnerdbclient import NetrunnerDbClient
 
 import logging
+
+from query.bestresultfinder import BestResultFinder
+
 logger = logging.getLogger(__name__)
 
 
@@ -11,15 +14,13 @@ class CardRepository:
         self.__client = NetrunnerDbClient()
         self.__config = ClientConfig()
         self.__store = CardStore(self.__client.get_cards())
+        self.__finder = BestResultFinder(self.__store)
 
     def get_store(self):
         return self.__store
 
-    def get_card_by_title(self, title):
-        return self.__store.get_card_by_title(title)
-
     def get_card_path(self, query):
-        card = self.get_store().get_card_by_match(query)
+        card = self.__finder.get_best_match(query)
         if card:
             return self.__config.get_card_png.format(card.code)
 
