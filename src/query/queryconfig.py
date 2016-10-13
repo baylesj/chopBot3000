@@ -1,14 +1,14 @@
 import yaml
 import os
 import logging
-
+logger = logging.getLogger(__name__)
 
 class QueryConfig:
     expected_keys = {"weights": ["full_title", "partial_title", "full_text", "partial_text", "default"]}
 
     def __init__(self, config_path="./query/queryconfig.yml"):
         if not os.path.isfile(config_path):
-            logging.critical('Unable to load the configuration file')
+            logger.critical('Unable to load the configuration file')
             raise FileNotFoundError
 
         with open(config_path, 'r') as yml_file:

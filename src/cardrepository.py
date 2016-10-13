@@ -2,6 +2,9 @@ from card.cardstore import CardStore
 from netrunnerdb.clientconfig import ClientConfig
 from netrunnerdb.netrunnerdbclient import NetrunnerDbClient
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class CardRepository:
     def __init__(self):
@@ -20,4 +23,5 @@ class CardRepository:
         if card:
             return self.__config.get_card_png.format(card.code)
 
+        logging.warning("Failed to get valid card path for: " + query)
         return None

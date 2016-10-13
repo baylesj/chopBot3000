@@ -3,6 +3,8 @@ import os
 
 from slackclient import SlackClient
 
+import logging
+logger = logging.getLogger(__name__)
 
 def get_message_info(event, bot_name):
     return event['channel'], event['user'], event['text'][len(bot_name) + 1:].strip()
@@ -32,4 +34,4 @@ def monitor(repo):
                     if event['type'] == 'message' and event['text'].startswith(bot_name):
                         reply(event, bot_name, client, repo)
             except Exception as e:
-                logging.error("Invalid event received")
+                logger.error("Invalid event received")

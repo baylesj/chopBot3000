@@ -1,11 +1,13 @@
 import yaml
 import os
 import logging
+logger = logging.getLogger(__name__)
+
 
 class ClientConfig:
     def __init__(self, config_path="./netrunnerdb/clientconfig.yml"):
         if not os.path.isfile(config_path):
-            logging.critical('Unable to load the configuration file')
+            logger.critical('Unable to load the configuration file')
             raise FileNotFoundError
 
         with open(config_path, 'r') as yml_file:

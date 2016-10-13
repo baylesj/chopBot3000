@@ -1,5 +1,8 @@
 from query.queryranker import QueryRanker
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class BestResultFinder:
     def __init__(self, card_store):
@@ -22,5 +25,7 @@ class BestResultFinder:
             if score > max_score:
                 max_location = i
                 max_score = score
+
+        logger.info("Card query return location {}, score {}".format(max_location, max_score))
 
         return self.__cards[max_location]

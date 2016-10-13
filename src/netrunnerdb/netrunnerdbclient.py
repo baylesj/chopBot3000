@@ -1,6 +1,7 @@
 import requests
-
 from netrunnerdb.clientconfig import ClientConfig
+import logging
+logger = logging.getLogger(__name__)
 
 
 class NetrunnerDbClient:
@@ -10,8 +11,9 @@ class NetrunnerDbClient:
     def __get_response(self, url):
         response = requests.get(url)
         if response.status_code != 200:
-            raise SystemError('Request at "{}" raised {}'
-                    .format(url, response.status_code))
+            message = 'Request at "{}" raised {}'.format(url, response.status_code)
+            logger.error(message)
+            raise SystemError(message)
 
         return response
 
