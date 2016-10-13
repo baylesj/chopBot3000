@@ -2,7 +2,7 @@ import unittest
 from datetime import datetime
 from datetime import timedelta
 
-from netrunnerdb.cardstore import CardStore
+from card.cardstore import CardStore
 
 
 class CardStoreTest(unittest.TestCase):

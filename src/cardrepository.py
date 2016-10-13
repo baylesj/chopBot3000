@@ -1,12 +1,12 @@
-from netrunnerdb.cardstore import CardStore
-from netrunnerdb.configuration import Configuration
-from netrunnerdb.netrunnerclient import NetrunnerClient
+from card.cardstore import CardStore
+from netrunnerdb.clientconfig import ClientConfig
+from netrunnerdb.netrunnerdbclient import NetrunnerDbClient
 
 
 class CardRepository:
     def __init__(self):
-        self.__client = NetrunnerClient()
-        self.__config = Configuration()
+        self.__client = NetrunnerDbClient()
+        self.__config = ClientConfig()
         self.__store = CardStore(self.__client.get_cards())
 
     def get_store(self):

@@ -1,11 +1,11 @@
 import requests
 
-from netrunnerdb.configuration import Configuration
+from netrunnerdb.clientconfig import ClientConfig
 
 
-class NetrunnerClient:
+class NetrunnerDbClient:
     def __init__(self):
-        self.__config = Configuration()
+        self.__config = ClientConfig()
 
     def __get_response(self, url):
         response = requests.get(url)
