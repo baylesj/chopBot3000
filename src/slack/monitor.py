@@ -17,11 +17,11 @@ def reply(event, bot_name, client, repo):
     client.server.channels.find(channel).send_message(message)
 
 
-def monitor(repo, bot_name, client):
+def monitor(repo):
     # TODO: get this from API
     bot_name = "<@U2J5GAF96>"
-    os.environ["SLACK_BOT_TOKEN"] = "xoxb-86186355312-OonGNYEHhEPpgFxgC1lQClxz"
-    token = os.environ["SLACK_BOT_TOKEN"]
+    #os.environ["SLACK_BOT_TOKEN"] =
+    token = os.environ["CHOPBOT_3000_TOKEN"]
     client = SlackClient(token)
 
     if client.rtm_connect():
