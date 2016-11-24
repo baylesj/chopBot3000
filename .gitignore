@@ -2,3 +2,5 @@
 *.pyc
 .idea
 .vagrant
+src/chopbot.log
+*.vscode
