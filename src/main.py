@@ -2,6 +2,7 @@ import os
 import logging
 import sys
 import getopt
+import time
 
 from slackclient import SlackClient
 from netrunnerdb.cardrepository import CardRepository
@@ -40,6 +41,9 @@ def monitor(repo, bot_name, client):
         while True:
             events = client.rtm_read()
             try:
+                if len(events) == 0:
+                    logging.debug("No events. Sleeping...")
+                    time.sleep(1)
                 for event in events:
                     logging.info("Received an event with text: ")
                     logging.info(event)
