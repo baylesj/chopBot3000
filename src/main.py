@@ -8,6 +8,7 @@ from slack.slackslashhandler import SlackSlashHandler
 from cardrepository import CardRepository
 from flask import Flask
 from flask import request
+import flask
 
 app = Flask(__name__)
 
@@ -32,22 +33,7 @@ def print_help():
 
 @app.route('/', methods=['POST'])
 def serve_matching_card():
-    print(request.form)
-    # token=gIkuvaNzQIHg97ATvDxqgjtO
-    # team_id=T0001
-    # team_domain=example
-    # channel_id=C2147483705
-    # channel_name=test
-    # user_id=U2147483697
-    # user_name=Steve
-    # command=/weather
-    # text=94070
-    # response_url=https://hooks.slack.com/commands/1234/5678
-    for key in request.form:
-        print("Key: "+key)
-        print(request.form[key])
-    #return 'Hello world'
-    return handler.get_matching_card(request.form['text'])
+    return flask.jsonify(handler.get_matching_card(flask.request))
 
 if __name__ == "__main__":
     log_level = "WARNING"
