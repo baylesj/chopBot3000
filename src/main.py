@@ -4,8 +4,13 @@ import sys
 import getopt
 import time
 
+from flask import Flask
+from flask import request
 from slackclient import SlackClient
 from netrunnerdb.cardrepository import CardRepository
+from slack.slackslashhandler import SlackSlashHandler
+
+app = Flask(__name__)
 
 
 def initialize_logging(log_level):
@@ -57,7 +62,26 @@ def print_help():
     print('{0} [ -L|--log_level=[INFO|WARNING|ERROR] ]'.format(sys.argv[0]))
 
 
-def main():
+@app.route('/', methods=['POST'])
+def hello_world():
+    print(request.form)
+    # token=gIkuvaNzQIHg97ATvDxqgjtO
+    # team_id=T0001
+    # team_domain=example
+    # channel_id=C2147483705
+    # channel_name=test
+    # user_id=U2147483697
+    # user_name=Steve
+    # command=/weather
+    # text=94070
+    # response_url=https://hooks.slack.com/commands/1234/5678
+    for key in request.form:
+        print("Key: "+key)
+        print(request.form[key])
+    #return 'Hello world'
+    return handler.get_matching_card(request.form['text'])
+
+if __name__ == "__main__":
     log_level = "WARNING"
     try:
         opts, args = getopt.getopt(sys.argv[1:],"hL:",["log_level="])
@@ -77,20 +101,20 @@ def main():
     logging.warning("Starting application...")
 
     # TODO: get this from API
-    bot_name = "<@U378QUALE>"
-
-    if "SLACK_BOT_TOKEN" not in os.environ:
-        logging.error("SLACK_BOT_TOKEN environment variable not provided!")
-        sys.exit(-1)
-    token = os.environ["SLACK_BOT_TOKEN"]
+    #bot_name = "<@U378QUALE>"
+    #
+    #if "SLACK_BOT_TOKEN" not in os.environ:
+    #    logging.error("SLACK_BOT_TOKEN environment variable not provided!")
+    #    sys.exit(-1)
+    #token = os.environ["SLACK_BOT_TOKEN"]
     
     repo = CardRepository()
-    client = SlackClient(token)
+    #client = SlackClient(token)
+    handler = SlackSlashHandler(repo)
 
-    monitor(repo, bot_name, client)
+    #monitor(repo, bot_name, client)
+    app.run(host='0.0.0.0', port=5000, threaded=True, debug=True)
 
     logging.warning("Exiting application...")
 
 
-if __name__ == "__main__":
-    main()
