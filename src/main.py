@@ -28,7 +28,11 @@ def initialize_logging(log_level):
 
 
 def print_help():
-    print('{0} [ -L|--log_level=[INFO|WARNING|ERROR] ]'.format(sys.argv[0]))
+    print()
+    print('{0} [ -L|--log_level=[INFO|WARNING|ERROR] -b ]'.format(sys.argv[0]))
+    print()
+    print('     -b')
+    print('             Operate in legacy bot mode rather than slash command.')
 
 
 @app.route('/', methods=['POST'])
@@ -37,17 +41,20 @@ def serve_matching_card():
 
 if __name__ == "__main__":
     log_level = "WARNING"
+    should_use_bot = False
     try:
-        opts, args = getopt.getopt(sys.argv[1:],"hL:",["log_level="])
+        opts, args = getopt.getopt(sys.argv[1:],"hbL:",["log_level="])
     except getopt.GetoptError:
         print("Error parsing options.")
         print_help()
         sys.exit(2)
-    print(opts)
+    
     for opt, arg in opts:
         if opt == '-h':
             print_help()
             sys.exit()
+        elif opt == '-b':
+            should_use_bot = True
         elif opt in ("-L", "--log_level"):
             log_level = arg
 
@@ -55,11 +62,11 @@ if __name__ == "__main__":
     logging.warning("Starting application...")
 
     repo = CardRepository()
-    #client = SlackClient(token)
-    handler = SlackSlashHandler(repo)
-
-    #monitor(repo)
-    app.run(host='0.0.0.0', port=5000, threaded=True, debug=True)
+    if should_use_bot:
+        monitor(repo)
+    else:
+        handler = SlackSlashHandler(repo)
+        app.run(host='0.0.0.0', port=5000, threaded=True, debug=True)
 
     logging.warning("Exiting application...")
 
