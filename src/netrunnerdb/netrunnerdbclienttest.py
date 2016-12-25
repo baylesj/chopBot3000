@@ -1,7 +1,7 @@
 import unittest
 
 
-class NetrunnerClientTest(unittest.TestCase):
+class NetrunnerDbClientTest(unittest.TestCase):
     pass
 
 

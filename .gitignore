@@ -4,3 +4,4 @@
 .vagrant
 src/chopbot.log
 *.vscode
+*.log

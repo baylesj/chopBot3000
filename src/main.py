@@ -1,11 +1,10 @@
-import os
+#!/usr/bin/env python3
 import logging
 import sys
 import getopt
-import time
 
-from slackclient import SlackClient
-from netrunnerdb.cardrepository import CardRepository
+from slack.monitor import monitor
+from cardrepository import CardRepository
 
 
 def initialize_logging(log_level):
@@ -21,37 +20,6 @@ def initialize_logging(log_level):
     consoleHandler.setFormatter(logFormatter)
     rootLogger.addHandler(consoleHandler)
 
-
-def get_message_info(event, bot_name):
-    return event['channel'], event['user'], event['text'][len(bot_name) + 1:].strip()
-
-
-def reply(event, bot_name, client, repo):
-    channel, user, message = get_message_info(event, bot_name)
-    try:
-        message = repo.get_card_path(message)
-    except Exception as e:
-        message = "Unable to find card you requested, sorry."
-        logging.info(e)
-    client.server.channels.find(channel).send_message(message)
-
-
-def monitor(repo, bot_name, client):
-    if client.rtm_connect():
-        while True:
-            events = client.rtm_read()
-            try:
-                if len(events) == 0:
-                    logging.debug("No events. Sleeping...")
-                    time.sleep(1)
-                for event in events:
-                    logging.info("Received an event with text: ")
-                    logging.info(event)
-                    if event['type'] == 'message' and event['text'].startswith(bot_name):
-                        reply(event, bot_name, client, repo)
-            except Exception as e:
-                logging.error("Invalid event received")
-                logging.error(e)
 
 def print_help():
     print('{0} [ -L|--log_level=[INFO|WARNING|ERROR] ]'.format(sys.argv[0]))
@@ -76,18 +44,8 @@ def main():
     initialize_logging(log_level)
     logging.warning("Starting application...")
 
-    # TODO: get this from API
-    bot_name = "<@U378QUALE>"
-
-    if "SLACK_BOT_TOKEN" not in os.environ:
-        logging.error("SLACK_BOT_TOKEN environment variable not provided!")
-        sys.exit(-1)
-    token = os.environ["SLACK_BOT_TOKEN"]
-    
     repo = CardRepository()
-    client = SlackClient(token)
-
-    monitor(repo, bot_name, client)
+    monitor(repo)
 
     logging.warning("Exiting application...")
 
