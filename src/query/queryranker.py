@@ -1,4 +1,5 @@
 from query.queryconfig import QueryConfig
+import logging
 
 
 class QueryRanker:
@@ -31,7 +32,8 @@ class QueryRanker:
         return 0
 
     def __get_keyword_weight(self, card, query):
-        if query in [x.lower() for x in card.keywords.split()]:
+        keywords = [x.lower() for x in card.keywords.split()]
+        if set(query.split()) <= set(keywords):
             return self.__config.keyword_weight
         return 0
 
