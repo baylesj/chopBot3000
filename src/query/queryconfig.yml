@@ -2,7 +2,7 @@ weights:
   full_title: 1000
   partial_title: 100
 
-  keyword: 500
+  keyword: 50
 
   full_text: 100
   partial_text: 10
