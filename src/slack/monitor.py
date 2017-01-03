@@ -1,5 +1,6 @@
 import logging
 import os
+import time
 
 from slackclient import SlackClient
 
@@ -22,7 +23,6 @@ def reply(event, bot_name, client, repo):
 def monitor(repo):
     # TODO: get this from API
     bot_name = "<@U2J5GAF96>"
-    #os.environ["SLACK_BOT_TOKEN"] =
     token = os.environ["CHOPBOT_3000_TOKEN"]
     client = SlackClient(token)
 
@@ -30,8 +30,14 @@ def monitor(repo):
         while True:
             events = client.rtm_read()
             try:
+                if len(events) == 0:
+                    logger.debug("No events. Sleeping...")
+                    time.sleep(1)
                 for event in events:
+                    logger.info("Received an event with text: ")
+                    logger.info(event)
                     if event['type'] == 'message' and event['text'].startswith(bot_name):
                         reply(event, bot_name, client, repo)
             except Exception as e:
                 logger.error("Invalid event received")
+                logger.error(e)
